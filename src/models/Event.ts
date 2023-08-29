@@ -10,11 +10,12 @@ export interface EventDeclaration {
 export interface Page {
 	title: string;
 	description: string;
-	type: 'info' | 'fields' | 'payment' | 'done';
+	type: 'info' | 'fields' | 'submit' | 'payment' | 'done';
 	fields: Field[];
 }
 
 export interface Field {
+	id: string;
 	title: string;
 	description: string;
 	type: 'text' | 'number' | 'email' | 'phone' | 'date';
