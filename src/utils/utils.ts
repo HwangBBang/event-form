@@ -1,11 +1,13 @@
 import axios from 'axios';
 
-export async function getTimeError() {
+export async function getTimeError(): Promise<number> {
 	const clientSendTime = new Date().getTime();
 
 	try {
-		const response = await axios.get('https://www.google.com');
-		const serverTime = new Date(response.headers['date']).getTime();
+		const response = await axios.get(
+			'http://worldtimeapi.org/api/timezone/Etc/UTC'
+		);
+		const serverTime = new Date(response.data.utc_datetime).getTime();
 		const clientReceiveTime = new Date().getTime();
 
 		const requestRoundTripTime = clientReceiveTime - clientSendTime;
@@ -21,7 +23,6 @@ export async function getTimeError() {
 		return timeDifference;
 	} catch (error) {
 		console.error('An error occurred:', error);
-
 		return 0;
 	}
 }

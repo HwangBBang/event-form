@@ -6,7 +6,7 @@ export interface EventDeclaration {
 	organization: string;
 	fields: Field[];
 	limitation: number;
-	submitStartAt: Date;
+	openAt: Timestamp;
 }
 
 export interface Field {

@@ -32,12 +32,17 @@ const EventFieldPage = ({
 		const date = new Date();
 		date.setTime(getRealTime(timeDiff ?? 0));
 
+		if (event.openAt?.toDate().getTime() > date.getTime()) {
+			alert('아직 응모가 시작되지 않았습니다.');
+			return;
+		}
+
 		await updateApply(eventId, applyId, {
 			submitRequestedAt: date,
 		});
 
 		setStep('result');
-	}, [applyId, eventId, setStep, timeDiff]);
+	}, [applyId, event.openAt, eventId, setStep, timeDiff]);
 	return (
 		<div>
 			<h1>응모하기</h1>
