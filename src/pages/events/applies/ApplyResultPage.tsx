@@ -1,14 +1,5 @@
-import React from 'react';
-import { Button } from '@mui/material';
 import { Apply, EventDeclaration } from '../../../models/Event';
-import {
-	subscribeApply,
-	updateApply,
-	useApplies,
-	useSubscribeApplies,
-} from '../../../db/firestore';
-import { getTimeError, getRealTime } from '../../../utils/utils';
-import useQueryState from '../../../hooks/useQueryState';
+import { useApplies } from '../../../db/firestore';
 
 export interface EventFieldPageProps {
 	event: EventDeclaration;

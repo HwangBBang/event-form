@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from '@mui/material';
-import axios from 'axios';
 import { Apply, EventDeclaration } from '../../../models/Event';
 import { updateApply } from '../../../db/firestore';
 import { getTimeError, getRealTime } from '../../../utils/utils';

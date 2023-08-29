@@ -24,7 +24,7 @@ const FieldView = ({ field, value, onValueChange }: FieldProps) => {
 			default:
 				return <div>알 수 없는 필드 정보입니다.</div>;
 		}
-	}, [field, onValueChange]);
+	}, [field.type, onValueChange, value]);
 
 	return (
 		<FieldViewRoot>
