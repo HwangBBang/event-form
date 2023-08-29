@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { Routes, Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import MainPage from './pages/MainPage';
-import EventRegisterPage from './pages/EventRegisterPage';
+import EventApplicationPage from './pages/EventApplicationPage';
 import EventsPage from './pages/EventsPage';
 import EventEditPage from './pages/EventEditPage';
 import EventResultPage from './pages/EventResultPage';
@@ -22,8 +22,7 @@ root.render(
 					<Route index element={<MainPage />} />
 					<Route path="events">
 						<Route index element={<EventsPage />} />
-						<Route path="new" element={<EventEditPage />} />
-						<Route path=":eventId" element={<EventRegisterPage />}></Route>
+						<Route path=":eventId" element={<EventApplicationPage />}></Route>
 						<Route path=":eventId/edit" element={<EventEditPage />} />
 						<Route path=":eventId/result" element={<EventResultPage />} />
 					</Route>
