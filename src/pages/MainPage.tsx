@@ -4,12 +4,14 @@ import { useNavigate } from 'react-router';
 
 function App() {
 	const navigate = useNavigate();
+	React.useEffect(() => {
+		navigate(`./events`);
+	}, [navigate]);
 	return (
 		<div className="App">
 			<Button
 				variant="contained"
 				size="medium"
-				style={{ backgroundColor: 'grey', color: 'white' }}
 				onClick={() => {
 					navigate(`./events`);
 				}}

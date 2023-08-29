@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams } from 'react-router';
 import {
 	subscribeApply,
-	subscribeEvent,
 	updateApplyField,
 	useSubscribeEvent,
 } from '../../../db/firestore';
@@ -10,12 +9,12 @@ import ApplyInputPage from './ApplyInputPage';
 import ApplySubmitPage from './ApplySubmitPage';
 import ApplyResultPage from './ApplyResultPage';
 import useQueryState from '../../../hooks/useQueryState';
-import { Apply, EventDeclaration } from '../../../models/Event';
+import { Apply } from '../../../models/Event';
 import CircularProgress from '@mui/material/CircularProgress';
 import usePreventReload from '../../../hooks/usePreventReload';
 import useTimeError from '../../../hooks/useTimeError';
 const ApplyPage = () => {
-	usePreventReload('ㅁㄴㅇㄹ');
+	usePreventReload('새로고침을 하면 응모가 취소됩니다.');
 	const { eventId = '', applyId = '' } = useParams();
 	const [step, setStep] = useQueryState<'input' | 'submit' | 'result'>(
 		'step',
@@ -83,6 +82,7 @@ const ApplyPage = () => {
 					eventId={eventId}
 					timeError={timeError}
 					applies={applies}
+					submitterList={submitterList}
 				/>
 			);
 	}

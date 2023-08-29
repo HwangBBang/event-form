@@ -16,26 +16,37 @@ import EventPage from './pages/events/EventPage';
 import EventEditPage from './pages/events/EventEditPage';
 import EventResultPage from './pages/events/EventResultPage';
 import ApplyPage from './pages/events/applies';
+import { ThemeProvider, createTheme } from '@mui/material';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
 );
+const theme = createTheme({
+	palette: {
+		primary: {
+			main: '#ff9900',
+		},
+	},
+});
+
 root.render(
 	<React.StrictMode>
-		<BrowserRouter>
-			<Routes>
-				<Route path="/" element={<IndexPage />}>
-					<Route index element={<MainPage />} />
-					<Route path="events">
-						<Route index element={<EventsPage />} />
-						<Route path=":eventId" element={<EventPage />}></Route>
-						<Route path=":eventId/edit" element={<EventEditPage />} />
-						<Route path=":eventId/applies/:applyId" element={<ApplyPage />} />
-						<Route path=":eventId/result" element={<EventResultPage />} />
+		<ThemeProvider theme={theme}>
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" element={<IndexPage />}>
+						<Route index element={<MainPage />} />
+						<Route path="events">
+							<Route index element={<EventsPage />} />
+							<Route path=":eventId" element={<EventPage />}></Route>
+							<Route path=":eventId/edit" element={<EventEditPage />} />
+							<Route path=":eventId/applies/:applyId" element={<ApplyPage />} />
+							<Route path=":eventId/result" element={<EventResultPage />} />
+						</Route>
 					</Route>
-				</Route>
-			</Routes>
-		</BrowserRouter>
+				</Routes>
+			</BrowserRouter>
+		</ThemeProvider>
 	</React.StrictMode>
 );
 

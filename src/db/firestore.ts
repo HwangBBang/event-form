@@ -1,16 +1,12 @@
 import {
 	addDoc,
 	collection,
-	deleteDoc,
 	doc,
 	getDoc,
 	getDocs,
-	increment,
 	onSnapshot,
 	query,
-	setDoc,
 	updateDoc,
-	where,
 } from 'firebase/firestore';
 
 import { fs } from '../utils/firebase';
@@ -69,7 +65,7 @@ export const makeApply = async (eventId: string) => {
 	if (!eventDoc.exists()) {
 		throw new Error('Event not found');
 	}
-	const event = eventDoc.data() as EventDeclaration;
+	// const event = eventDoc.data() as EventDeclaration;
 	// if (event.status !== 'open') {
 	// 	throw new Error('Event is not open');
 	// }

@@ -72,12 +72,15 @@ function App() {
 				이벤트 일시: {event.openAt.toDate().toLocaleString()}
 			</Typography>
 
+			<Typography variant="body1" color="text.secondary">
+				제한 인원: {event.limitation}명
+			</Typography>
+
 			<div style={{ textAlign: 'right' }}>
 				<Button
 					variant="contained"
 					endIcon={<SendIcon />}
 					onClick={goToNextPage}
-					style={{ backgroundColor: 'grey', color: 'white' }}
 				>
 					신청
 				</Button>

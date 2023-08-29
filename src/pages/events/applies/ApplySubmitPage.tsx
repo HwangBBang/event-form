@@ -2,13 +2,10 @@ import React from 'react';
 import { Button } from '@mui/material';
 import { Apply, EventDeclaration } from '../../../models/Event';
 import { updateApply } from '../../../db/firestore';
-import {
-	getTimeError,
-	getRealTime,
-	humanFriendlyTimeDifference,
-} from '../../../utils/utils';
+import { getRealTime, humanFriendlyTimeDifference } from '../../../utils/utils';
 import useQueryState from '../../../hooks/useQueryState';
 import { Typography } from '@mui/material';
+import { serverTimestamp } from 'firebase/firestore';
 
 export interface EventFieldPageProps {
 	event: EventDeclaration;
@@ -44,7 +41,7 @@ const EventFieldPage = ({
 		}
 
 		await updateApply(eventId, applyId, {
-			submitRequestedAt: now,
+			submitRequestedAt: serverTimestamp(),
 		});
 
 		setStep('result');
@@ -70,14 +67,20 @@ const EventFieldPage = ({
 	return (
 		<div>
 			<div style={{ padding: 24 }}>
-				<Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
+				<Typography
+					variant="h5"
+					sx={{
+						fontWeight: 'bold',
+						mb: 2,
+					}}
+				>
 					응모하기
 				</Typography>
 				<Typography variant="body1" color="text.secondary" paragraph>
 					이벤트 시간에 맞추어 아래의 응모 버튼을 눌러주세요.
 				</Typography>
 				<Typography variant="body1" color="text.secondary" paragraph>
-					이벤트 시간: {event.openAt.toDate().toLocaleString()}
+					{event.openAt.toDate().toLocaleString()}
 				</Typography>
 				<Typography variant="body1" color="text.secondary" paragraph>
 					{diff}
@@ -95,18 +98,12 @@ const EventFieldPage = ({
 					<Button
 						variant="contained"
 						size="medium"
-						style={{ backgroundColor: 'grey', color: 'white' }}
 						onClick={() => setStep('input')}
 					>
 						이전
 					</Button>
 
-					<Button
-						variant="contained"
-						size="medium"
-						style={{ backgroundColor: 'grey', color: 'white' }}
-						onClick={onSubmit}
-					>
+					<Button variant="contained" size="medium" onClick={onSubmit}>
 						응모
 					</Button>
 				</div>

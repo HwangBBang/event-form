@@ -1,14 +1,7 @@
 import React from 'react';
 import { EventDeclaration } from '../../models/Event';
 import { subscribeEvents } from '../../db/firestore';
-import {
-	Button,
-	Card,
-	CardActions,
-	CardContent,
-	CardMedia,
-	Typography,
-} from '@mui/material';
+import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { useNavigate } from 'react-router';
 
 function App() {
