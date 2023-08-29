@@ -1,15 +1,13 @@
 import React from 'react';
-import { subscribeEvents } from '../db/firestore';
-import { EventDeclaration } from '../models/Event';
+import { EventDeclaration } from '../../models/Event';
+import { subscribeEvents } from '../../db/firestore';
 
 function App() {
 	const [events, setEvents] = React.useState<{
 		[name in string]: EventDeclaration;
 	}>({});
 	React.useEffect(() => {
-		const unsubscribeGroups = subscribeEvents((_events) => {
-			setEvents(_events);
-		});
+		const unsubscribeGroups = subscribeEvents(setEvents);
 		return () => {
 			unsubscribeGroups();
 		};

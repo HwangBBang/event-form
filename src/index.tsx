@@ -6,16 +6,16 @@ import reportWebVitals from './reportWebVitals';
 import { Routes, Route } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import MainPage from './pages/MainPage';
-import EventApplicationPage from './pages/EventApplyPage';
-import EventsPage from './pages/EventsPage';
-import EventEditPage from './pages/EventEditPage';
-import EventResultPage from './pages/EventResultPage';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import EventPage from './pages/EventPage';
+import EventsPage from './pages/events/EventsPage';
+import EventPage from './pages/events/EventPage';
+import EventEditPage from './pages/events/EventEditPage';
+import EventResultPage from './pages/events/EventResultPage';
+import ApplyPage from './pages/events/applies';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
@@ -30,7 +30,7 @@ root.render(
 						<Route index element={<EventsPage />} />
 						<Route path=":eventId" element={<EventPage />}></Route>
 						<Route path=":eventId/edit" element={<EventEditPage />} />
-						<Route path=":eventId/apply" element={<EventApplicationPage />} />
+						<Route path=":eventId/applies/:applyId" element={<ApplyPage />} />
 						<Route path=":eventId/result" element={<EventResultPage />} />
 					</Route>
 				</Route>

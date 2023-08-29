@@ -1,17 +1,12 @@
+import { Timestamp } from 'firebase/firestore';
+
 export interface EventDeclaration {
 	title: string;
 	description: string;
 	organization: string;
-	pages: Page[];
+	fields: Field[];
 	limitation: number;
 	submitStartAt: Date;
-}
-
-export interface Page {
-	title: string;
-	description: string;
-	type: 'info' | 'fields' | 'submit' | 'payment' | 'phoneVerify' | 'done';
-	fields: Field[];
 }
 
 export interface Field {
@@ -24,13 +19,13 @@ export interface Field {
 }
 
 export interface Apply {
-	fields?: Field[];
+	fields?: { [key in string]: Field };
 
 	createdAt?: Date;
 	updatedAt?: Date;
 	submittedAt?: Date;
 	paidAt?: Date;
-	completedAt?: Date;
+	submitRequestedAt?: Timestamp;
 }
 
 export interface FieldResponse {

@@ -4,6 +4,7 @@ import {
 	deleteDoc,
 	doc,
 	getDoc,
+	getDocs,
 	onSnapshot,
 	query,
 	setDoc,
@@ -13,6 +14,7 @@ import {
 
 import { fs } from '../utils/firebase';
 import { Apply, EventDeclaration } from '../models/Event';
+import { useEffect, useState } from 'react';
 
 function fbLog(msg: string) {
 	console.debug('[Firebase]', msg);
@@ -94,6 +96,17 @@ export const updateApplyField = async (
 	await updateDoc(applyRef, data as any);
 };
 
+export const updateApply = async (
+	eventId: string,
+	applyId: string,
+	fields: any
+) => {
+	fbLog(`Update apply /events/{${eventId}}/applies/{${applyId}}`);
+	const applyRef = doc(fs, 'events', eventId, 'applies', applyId);
+
+	await updateDoc(applyRef, { ...fields, updatedAt: new Date() });
+};
+
 export const subscribeApply = (
 	eventId: string,
 	applyId: string,
@@ -113,4 +126,65 @@ export const subscribeApply = (
 		fbLog(`Unsubscribe /events/{${eventId}}/applies/{${applyId}}`);
 		unsubscribe();
 	};
+};
+
+export const useSubscribeApplies = (
+	eventId: string
+): { [key in string]: Apply } => {
+	const [applies, setApplies] = useState<{ [key in string]: Apply }>({});
+
+	useEffect(() => {
+		fbLog(`Subscribe /events/{${eventId}}/applies`);
+
+		const unsubscribe = onSnapshot(
+			query(collection(fs, 'events', eventId, 'applies')),
+			(snapshot) => {
+				const newApplies: { [key in string]: Apply } = {};
+				snapshot.forEach((doc) => {
+					const data = doc.data();
+					if (data) {
+						newApplies[doc.id] = data as Apply;
+					}
+				});
+				setApplies((a) => ({ ...a, ...newApplies }));
+			}
+		);
+
+		return () => {
+			fbLog(`Unsubscribe /events/{${eventId}}/applies`);
+			unsubscribe();
+		};
+	}, [eventId]);
+
+	return applies;
+};
+
+export const useApplies = (
+	eventId: string
+): { [key in string]: Apply } | null => {
+	const [applies, setApplies] = useState<{ [key in string]: Apply } | null>(
+		null
+	);
+
+	useEffect(() => {
+		fbLog(`Fetch once /events/{${eventId}}/applies`);
+
+		const fetchApplies = async () => {
+			const q = query(collection(fs, 'events', eventId, 'applies'));
+			const snapshot = await getDocs(q);
+
+			const newApplies: { [key in string]: Apply } = {};
+			snapshot.forEach((doc) => {
+				const data = doc.data();
+				if (data) {
+					newApplies[doc.id] = data as Apply;
+				}
+			});
+			setApplies(newApplies);
+		};
+
+		fetchApplies();
+	}, [eventId]);
+
+	return applies;
 };

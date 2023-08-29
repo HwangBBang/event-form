@@ -10,6 +10,8 @@ admin.initializeApp();
 const firestore = admin.firestore();
 
 export const submit = onRequest(async (request, response) => {
+  response.set("Access-Control-Allow-Origin", "*");
+  response.set("Access-Control-Allow-Methods", "GET, POST");
   // eventId, ApplyId 를 받아서 firestore 로부터 각각 로드
 
   const eventId = request.query.eventId as string;
@@ -66,8 +68,20 @@ export const submit = onRequest(async (request, response) => {
         return 0;
       }
 
-      return aData.applyRequestAt.getTime() - bData.applyRequestAt.getTime();
+      const aDate = aData.applyRequestAt.toDate();
+      const bDate = bData.applyRequestAt.toDate();
+
+      return aDate.getTime() - bDate.getTime();
     });
+
+  // limitation이 있으면 해당 limitation을 넘는지 확인
+
+  if (eventData.limitation !== undefined) {
+    if (sortedApplies.length >= eventData.limitation) {
+      response.status(403).send("이미 모두 마감되었습니다.");
+      return;
+    }
+  }
 
   // 해당 리스트에 본인이 있는지 확인 boolean
 
@@ -83,6 +97,7 @@ export const submit = onRequest(async (request, response) => {
   // 본인이 있으면 해당 인덱스를 applyNumber로 지정
 
   applyRef.update({ applyNumber: index + 1 });
+  eventRef.update({ applyNumber: index + 1 });
 
   response.send({ applyNumber: index + 1 });
 });

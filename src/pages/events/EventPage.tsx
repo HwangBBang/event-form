@@ -1,9 +1,9 @@
 import React from 'react';
 
 import { useNavigate, useParams } from 'react-router';
-import { makeApply, subscribeEvent } from '../db/firestore';
-import { EventDeclaration } from '../models/Event';
 import { Button } from '@mui/material';
+import { EventDeclaration } from '../../models/Event';
+import { makeApply, subscribeEvent } from '../../db/firestore';
 
 function App() {
 	const { eventId = '' } = useParams();
@@ -12,17 +12,16 @@ function App() {
 	const [event, setEvent] = React.useState<EventDeclaration | null>(null);
 	React.useEffect(() => {
 		if (!eventId) return;
-		const unsubscribeGroups = subscribeEvent(eventId, (_events) => {
-			setEvent(_events);
-		});
+		const unsubscribeGroups = subscribeEvent(eventId, setEvent);
 		return () => {
 			unsubscribeGroups();
 		};
 	}, [eventId]);
 
 	const goToNextPage = React.useCallback(async () => {
-		navigate(`./apply`);
-	}, [navigate]);
+		const applyId = await makeApply(eventId);
+		navigate(`./applies/${applyId}?step=input`);
+	}, [eventId, navigate]);
 
 	if (!event) return <div>loading...</div>;
 
