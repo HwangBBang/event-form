@@ -1,19 +1,21 @@
 import React from 'react';
 import { Field } from '../../models/Event';
 import TextField from './TextField';
+import styled from 'styled-components';
 
 export interface FieldProps {
 	field: Field;
+	value: any;
 	onValueChange: (value: any) => void;
 }
 
-const FieldView = ({ field, onValueChange }: FieldProps) => {
+const FieldView = ({ field, value, onValueChange }: FieldProps) => {
 	const fieldContent = React.useMemo(() => {
 		switch (field.type) {
 			case 'text':
 				return (
 					<TextField
-						value={''}
+						value={value as string}
 						onValueChange={(value) => {
 							onValueChange(value);
 						}}
@@ -25,12 +27,19 @@ const FieldView = ({ field, onValueChange }: FieldProps) => {
 	}, [field, onValueChange]);
 
 	return (
-		<div>
+		<FieldViewRoot>
 			<p>{field.title}</p>
-			<p>{field.description}</p>
+			{field.description && <p>{field.description}</p>}
 			{fieldContent}
-		</div>
+		</FieldViewRoot>
 	);
 };
+
+const FieldViewRoot = styled.div`
+	background-color: #cccccc;
+	padding: 4px 16px;
+	margin: 24px;
+	border-radius: 8px;
+`;
 
 export default FieldView;

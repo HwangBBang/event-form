@@ -58,3 +58,38 @@ export const subscribeEvent = (
 		unsubscribe();
 	};
 };
+
+export const makeApply = async (eventId: string) => {
+	fbLog(`Make application /events/{${eventId}}`);
+	const eventRef = doc(fs, 'events', eventId);
+	const eventDoc = await getDoc(eventRef);
+	if (!eventDoc.exists()) {
+		throw new Error('Event not found');
+	}
+	const event = eventDoc.data() as EventDeclaration;
+	// if (event.status !== 'open') {
+	// 	throw new Error('Event is not open');
+	// }
+	const appliesRef = collection(eventRef, 'applies');
+	const applyDoc = await addDoc(appliesRef, {
+		createdAt: new Date(),
+		updatedAt: new Date(),
+	});
+	return applyDoc.id;
+};
+
+export const updateApply = async (
+	eventId: string,
+	applyId: string,
+	fields: any
+) => {
+	fbLog(`Update apply /events/{${eventId}}/applies/{${applyId}}`);
+	const applyRef = doc(fs, 'events', eventId, 'applies', applyId);
+	// update 'fields' on applyRef document
+	const data = {
+		fields,
+		updatedAt: new Date(),
+	};
+
+	await updateDoc(applyRef, data);
+};

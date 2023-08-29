@@ -1,13 +1,21 @@
 import React from 'react';
 import FieldView from '../../components/fields/FieldView';
 import { Page } from '../../models/Event';
+import { Button } from '@mui/material';
 
 export interface EventFieldPageProps {
 	page: Page;
+	response: { [key in string]: any };
+	setResponse: (response: { [key in string]: any }) => void;
+	onNextPage?: () => void;
 }
 
-const EventFieldPage = ({ page }: EventFieldPageProps) => {
-	const [values, setValues] = React.useState<any>({});
+const EventFieldPage = ({
+	page,
+	response,
+	setResponse,
+	onNextPage,
+}: EventFieldPageProps) => {
 	return (
 		<div>
 			<p>{page.title}</p>
@@ -17,8 +25,9 @@ const EventFieldPage = ({ page }: EventFieldPageProps) => {
 					return (
 						<FieldView
 							field={field}
+							value={response[field.id]}
 							onValueChange={(value) => {
-								setValues((prev: any) => {
+								setResponse((prev: any) => {
 									return {
 										...prev,
 										[field.id]: value,
@@ -29,6 +38,7 @@ const EventFieldPage = ({ page }: EventFieldPageProps) => {
 					);
 				})}
 			</p>
+			<Button onClick={onNextPage}>다음</Button>
 		</div>
 	);
 };
