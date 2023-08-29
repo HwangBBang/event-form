@@ -1,7 +1,7 @@
 import React from 'react';
 import FieldView from '../../../components/fields/FieldView';
 import { Apply, EventDeclaration } from '../../../models/Event';
-import { Button } from '@mui/material';
+import { Button, Card, Typography } from '@mui/material';
 
 export interface EventFieldPageProps {
 	event: EventDeclaration;
@@ -13,10 +13,12 @@ const EventFieldPage = ({ event, apply, onFieldSave }: EventFieldPageProps) => {
 	const [response, setResponse] = React.useState<{ [key in string]: any }>({});
 
 	return (
-		<div>
-			<h1>정보 입력</h1>
+		<div style={{ padding: 24 }}>
+			<Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
+				정보 입력
+			</Typography>
 			<p>이벤트 상품 수령을 위한 개인정보를 입력합니다.</p>
-			<p>
+			<div>
 				{event.fields?.map((field) => {
 					return (
 						<FieldView
@@ -33,7 +35,7 @@ const EventFieldPage = ({ event, apply, onFieldSave }: EventFieldPageProps) => {
 						/>
 					);
 				})}
-			</p>
+			</div>
 
 			<Button onClick={() => onFieldSave(response)}>다음</Button>
 		</div>

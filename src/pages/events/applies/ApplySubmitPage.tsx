@@ -45,7 +45,8 @@ const EventFieldPage = ({
 	return (
 		<div>
 			<h1>응모하기</h1>
-			<p>응모 대기중입니다.</p>
+			<p>{event.openAt.toDate().toLocaleString()} 오픈 예정입니다</p>
+			<p>선착순 {event.limitation} 명 입니다.</p>
 			<Button onClick={() => setStep('input')}>이전</Button>
 			<Button onClick={onSubmit}>응모하기</Button>
 		</div>
