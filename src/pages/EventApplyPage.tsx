@@ -1,16 +1,31 @@
 import React from 'react';
 
 import { useNavigate, useParams } from 'react-router';
-import { subscribeEvent, updateApply } from '../db/firestore';
-import { EventDeclaration, FieldResponse } from '../models/Event';
+import {
+	makeApply,
+	subscribeApply,
+	subscribeEvent,
+	updateApplyField,
+} from '../db/firestore';
+import { Apply, EventDeclaration, FieldResponse } from '../models/Event';
 import EventFieldPage from './ProgressPage/EventFieldPage';
 import { Button } from '@mui/material';
+import usePreventReload from '../hooks/usePreventReload';
 
 function App() {
-	const { eventId = '', applyId = '' } = useParams();
+	const { eventId = '' } = useParams();
+	usePreventReload('새로고침을 하면 작성하던 내용이 사라집니다.');
+
+	const [applyId, setApplyId] = React.useState<string | null>(null);
+
+	React.useEffect(() => {
+		makeApply(eventId).then((applyId) => {
+			setApplyId(applyId);
+		});
+	}, [eventId]);
 
 	const [event, setEvent] = React.useState<EventDeclaration | null>(null);
-	const [pageIndex, setPageIndex] = React.useState(0);
+
 	React.useEffect(() => {
 		if (!eventId) return;
 		const unsubscribeGroups = subscribeEvent(eventId, (_events) => {
@@ -21,12 +36,29 @@ function App() {
 		};
 	}, [eventId]);
 
+	const [pageIndex, setPageIndex] = React.useState(0);
+
 	const [response, setResponse] = React.useState<{ [key in string]: any }>({});
 
 	const goToNextPage = React.useCallback(async () => {
-		await updateApply(eventId, applyId, response);
+		if (!applyId) return;
+		await updateApplyField(eventId, applyId, response);
 		setPageIndex((prev) => prev + 1);
 	}, [applyId, eventId, response]);
+
+	const canGoBack = React.useMemo(() => {
+		return pageIndex > 0;
+	}, [pageIndex]);
+
+	const goToPrevPage = React.useCallback(async () => {
+		setPageIndex((prev) => prev - 1);
+	}, []);
+
+	const canGoNext = React.useMemo(() => {
+		if (!event) return false;
+		if (pageIndex >= event.pages.length - 1) return false;
+		return true;
+	}, [event, pageIndex]);
 
 	const renderPage = React.useMemo(() => {
 		if (!event) return <div>loading...</div>;
@@ -39,7 +71,8 @@ function App() {
 						page={page}
 						response={response}
 						setResponse={setResponse}
-						onNextPage={goToNextPage}
+						onNextPage={canGoNext ? goToNextPage : undefined}
+						onPrevPage={canGoBack ? goToPrevPage : undefined}
 					/>
 				);
 			case 'fields':
@@ -48,6 +81,8 @@ function App() {
 						page={page}
 						response={response}
 						setResponse={setResponse}
+						onNextPage={canGoNext ? goToNextPage : undefined}
+						onPrevPage={canGoBack ? goToPrevPage : undefined}
 					/>
 				);
 			case 'phoneVerify':
@@ -61,7 +96,15 @@ function App() {
 			default:
 				return <div>loading...</div>;
 		}
-	}, [event, goToNextPage, pageIndex, response]);
+	}, [
+		canGoBack,
+		canGoNext,
+		event,
+		goToNextPage,
+		goToPrevPage,
+		pageIndex,
+		response,
+	]);
 
 	return (
 		<div className="App">

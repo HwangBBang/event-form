@@ -24,12 +24,13 @@ export interface Field {
 }
 
 export interface Apply {
-	fields: Field[];
+	fields?: Field[];
 
-	accessedAt: Date;
-	submittedAt: Date;
-	paidAt: Date;
-	completedAt: Date;
+	createdAt?: Date;
+	updatedAt?: Date;
+	submittedAt?: Date;
+	paidAt?: Date;
+	completedAt?: Date;
 }
 
 export interface FieldResponse {

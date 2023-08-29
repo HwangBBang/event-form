@@ -30,10 +30,7 @@ root.render(
 						<Route index element={<EventsPage />} />
 						<Route path=":eventId" element={<EventPage />}></Route>
 						<Route path=":eventId/edit" element={<EventEditPage />} />
-						<Route
-							path=":eventId/applies/:applyId"
-							element={<EventApplicationPage />}
-						/>
+						<Route path=":eventId/apply" element={<EventApplicationPage />} />
 						<Route path=":eventId/result" element={<EventResultPage />} />
 					</Route>
 				</Route>

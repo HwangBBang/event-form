@@ -12,7 +12,7 @@ import {
 } from 'firebase/firestore';
 
 import { fs } from '../utils/firebase';
-import { EventDeclaration } from '../models/Event';
+import { Apply, EventDeclaration } from '../models/Event';
 
 function fbLog(msg: string) {
 	console.debug('[Firebase]', msg);
@@ -78,7 +78,7 @@ export const makeApply = async (eventId: string) => {
 	return applyDoc.id;
 };
 
-export const updateApply = async (
+export const updateApplyField = async (
 	eventId: string,
 	applyId: string,
 	fields: any
@@ -86,10 +86,31 @@ export const updateApply = async (
 	fbLog(`Update apply /events/{${eventId}}/applies/{${applyId}}`);
 	const applyRef = doc(fs, 'events', eventId, 'applies', applyId);
 	// update 'fields' on applyRef document
-	const data = {
+	const data: Apply = {
 		fields,
 		updatedAt: new Date(),
 	};
 
-	await updateDoc(applyRef, data);
+	await updateDoc(applyRef, data as any);
+};
+
+export const subscribeApply = (
+	eventId: string,
+	applyId: string,
+	onChange: (apply: Apply) => void
+) => {
+	fbLog(`Subscribe /events/{${eventId}}/applies/{${applyId}}`);
+	const unsubscribe = onSnapshot(
+		doc(fs, 'events', eventId, 'applies', applyId),
+		(d) => {
+			const data = d.data();
+			if (data) {
+				onChange(data as Apply);
+			}
+		}
+	);
+	return () => {
+		fbLog(`Unsubscribe /events/{${eventId}}/applies/{${applyId}}`);
+		unsubscribe();
+	};
 };

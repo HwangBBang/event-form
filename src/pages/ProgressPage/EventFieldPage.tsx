@@ -8,12 +8,14 @@ export interface EventFieldPageProps {
 	response: { [key in string]: any };
 	setResponse: (response: { [key in string]: any }) => void;
 	onNextPage?: () => void;
+	onPrevPage?: () => void;
 }
 
 const EventFieldPage = ({
 	page,
 	response,
 	setResponse,
+	onPrevPage,
 	onNextPage,
 }: EventFieldPageProps) => {
 	return (
@@ -38,7 +40,8 @@ const EventFieldPage = ({
 					);
 				})}
 			</p>
-			<Button onClick={onNextPage}>다음</Button>
+			{onPrevPage && <Button onClick={onPrevPage}>이전</Button>}
+			{onNextPage && <Button onClick={onNextPage}>다음</Button>}
 		</div>
 	);
 };
