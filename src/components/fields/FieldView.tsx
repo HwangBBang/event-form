@@ -15,6 +15,7 @@ const FieldView = ({ field, value, onValueChange }: FieldProps) => {
 			case 'text':
 				return (
 					<TextField
+						fullWidth
 						InputLabelProps={{
 							shrink: true,
 						}}

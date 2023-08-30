@@ -4,28 +4,23 @@ import {
 	subscribeApply,
 	subscribeEvent,
 	updateApplyField,
+	useSubscribeEvent,
 } from '../../../db/firestore';
 import ApplyInputPage from './ApplyInputPage';
 import ApplySubmitPage from './ApplySubmitPage';
 import ApplyResultPage from './ApplyResultPage';
 import useQueryState from '../../../hooks/useQueryState';
 import { Apply, EventDeclaration } from '../../../models/Event';
-
+import CircularProgress from '@mui/material/CircularProgress';
+import usePreventReload from '../../../hooks/usePreventReload';
+import useTimeError from '../../../hooks/useTimeError';
 const ApplyPage = () => {
+	usePreventReload('ㅁㄴㅇㄹ');
 	const { eventId = '', applyId = '' } = useParams();
 	const [step, setStep] = useQueryState<'input' | 'submit' | 'result'>(
 		'step',
 		'input'
 	);
-
-	const [event, setEvent] = React.useState<EventDeclaration | null>(null);
-	React.useEffect(() => {
-		if (!eventId) return;
-		const unsubscribeGroups = subscribeEvent(eventId, setEvent);
-		return () => {
-			unsubscribeGroups();
-		};
-	}, [eventId]);
 
 	const [apply, setApply] = React.useState<Apply | null>(null);
 
@@ -37,7 +32,23 @@ const ApplyPage = () => {
 		};
 	}, [applyId, eventId]);
 
-	if (!event || !apply) return <div>loading...</div>;
+	const { applies, appliesCount, event, submitterList, connectersCount } =
+		useSubscribeEvent(eventId);
+
+	const timeError = useTimeError() ?? 0;
+
+	if (!event || !apply)
+		return (
+			<CircularProgress
+				color="inherit"
+				style={{
+					position: 'absolute',
+					top: '50%',
+					left: '50%',
+					transform: 'translate(-50%, -50%)',
+				}}
+			/>
+		);
 
 	switch (step) {
 		case 'input':
@@ -58,6 +69,9 @@ const ApplyPage = () => {
 					apply={apply}
 					applyId={applyId}
 					eventId={eventId}
+					appliesCount={appliesCount}
+					timeError={timeError}
+					connectersCount={connectersCount}
 				/>
 			);
 		case 'result':
@@ -67,10 +81,11 @@ const ApplyPage = () => {
 					apply={apply}
 					applyId={applyId}
 					eventId={eventId}
+					timeError={timeError}
 				/>
 			);
 	}
-	return <div>loading...</div>;
+	return <div>{<CircularProgress color="inherit" />}</div>;
 };
 
 export default ApplyPage;

@@ -4,6 +4,8 @@
 	"private": true,
 	"dependencies": {
 		"@fontsource/roboto": "^5.0.8",
+		"@mui/icons-material": "^5.14.7",
+		"@mui/lab": "^5.0.0-alpha.142",
 		"@mui/material": "^5.14.7",
 		"@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
 		"@testing-library/jest-dom": "^5.17.0",
@@ -14,7 +16,9 @@
 		"@types/react": "^18.2.21",
 		"@types/react-dom": "^18.2.7",
 		"axios": "^1.5.0",
+		"canvas-confetti": "^1.6.0",
 		"firebase": "^10.3.0",
+		"moment": "^2.29.4",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-router": "^6.14.2",
@@ -52,6 +56,7 @@
 		]
 	},
 	"devDependencies": {
+		"@types/canvas-confetti": "^1.6.0",
 		"@types/styled-components": "^5.1.26"
 	}
 }

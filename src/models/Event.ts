@@ -7,6 +7,7 @@ export interface EventDeclaration {
 	fields: Field[];
 	limitation: number;
 	openAt: Timestamp;
+	imageUrl: string;
 }
 
 export interface Field {

@@ -5,6 +5,7 @@ import {
 	doc,
 	getDoc,
 	getDocs,
+	increment,
 	onSnapshot,
 	query,
 	setDoc,
@@ -128,9 +129,25 @@ export const subscribeApply = (
 	};
 };
 
-export const useSubscribeApplies = (
-	eventId: string
-): { [key in string]: Apply } => {
+export const useSubscribeEvent = (eventId: string) => {
+	const [event, setEvent] = useState<EventDeclaration | null>(null);
+
+	useEffect(() => {
+		fbLog(`Subscribe /events/{${eventId}}`);
+
+		const unsubscribe = onSnapshot(doc(fs, 'events', eventId), (d) => {
+			const data = d.data();
+			if (data) {
+				setEvent(data as EventDeclaration);
+			}
+		});
+
+		return () => {
+			fbLog(`Unsubscribe /events/{${eventId}}`);
+			unsubscribe();
+		};
+	}, [eventId]);
+
 	const [applies, setApplies] = useState<{ [key in string]: Apply }>({});
 
 	useEffect(() => {
@@ -156,7 +173,34 @@ export const useSubscribeApplies = (
 		};
 	}, [eventId]);
 
-	return applies;
+	const limitation = event?.limitation ?? 100;
+	const submitterList = Object.entries(applies ?? {})
+		.filter((apply) => !!apply[1].submitRequestedAt)
+		.sort((a, b) => {
+			const aRequestedAt = a[1].submitRequestedAt?.toDate().getTime();
+			const bRequestedAt = b[1].submitRequestedAt?.toDate()?.getTime();
+
+			if (!aRequestedAt) return 1;
+			if (!bRequestedAt) return -1;
+
+			const timeDiff = aRequestedAt - bRequestedAt;
+			if (timeDiff > 0) return 1;
+			if (timeDiff < 0) return -1;
+
+			return 0;
+		})
+		.slice(0, limitation);
+
+	const appliesCount = submitterList.length;
+	const connectersCount = Object.entries(applies ?? {}).length;
+
+	return {
+		event,
+		applies,
+		submitterList,
+		appliesCount,
+		connectersCount,
+	};
 };
 
 export const useApplies = (

@@ -1,7 +1,9 @@
 import React from 'react';
+// import { useNavigate } from 'react-router';
 import FieldView from '../../../components/fields/FieldView';
 import { Apply, EventDeclaration } from '../../../models/Event';
-import { Button, Card, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
+import { useNavigate } from 'react-router';
 
 export interface EventFieldPageProps {
 	event: EventDeclaration;
@@ -10,6 +12,7 @@ export interface EventFieldPageProps {
 }
 
 const EventFieldPage = ({ event, apply, onFieldSave }: EventFieldPageProps) => {
+	const navigate = useNavigate();
 	const [response, setResponse] = React.useState<{ [key in string]: any }>({});
 
 	return (
@@ -37,7 +40,25 @@ const EventFieldPage = ({ event, apply, onFieldSave }: EventFieldPageProps) => {
 				})}
 			</div>
 
-			<Button onClick={() => onFieldSave(response)}>다음</Button>
+			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+				<Button
+					variant="contained"
+					size="medium"
+					style={{ backgroundColor: 'grey', color: 'white' }}
+					//
+					onClick={() => navigate('../')}
+				>
+					이전
+				</Button>
+				<Button
+					variant="contained"
+					size="medium"
+					style={{ backgroundColor: 'grey', color: 'white' }}
+					onClick={() => onFieldSave(response)}
+				>
+					다음
+				</Button>
+			</div>
 		</div>
 	);
 };
