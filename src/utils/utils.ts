@@ -31,8 +31,9 @@ export async function getTimeError(): Promise<number> {
 export function getRealTime(timeDifference: number) {
 	const clientTime = new Date().getTime();
 	const currentTime = clientTime + timeDifference;
+	const realTime = new Date(currentTime);
 
-	return currentTime;
+	return realTime;
 }
 
 export function humanFriendlyTimeDifference(

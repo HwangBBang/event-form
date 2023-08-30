@@ -35,8 +35,7 @@ const EventFieldPage = ({
 	);
 
 	const onSubmit = React.useCallback(async () => {
-		const now = new Date();
-		now.setTime(getRealTime(timeError));
+		const now = getRealTime(timeError);
 
 		if (event.openAt?.toDate().getTime() > now.getTime()) {
 			alert('아직 응모가 시작되지 않았습니다.');
@@ -55,8 +54,7 @@ const EventFieldPage = ({
 	React.useEffect(() => {
 		const interval = setInterval(() => {
 			try {
-				const now = new Date();
-				now.setTime(getRealTime(timeError));
+				const now = getRealTime(timeError);
 
 				setDiff(humanFriendlyTimeDifference(now, event.openAt.toDate()));
 			} catch (e) {

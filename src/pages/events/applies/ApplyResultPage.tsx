@@ -11,6 +11,9 @@ export interface EventFieldPageProps {
 	eventId: string;
 	applyId: string;
 	timeError: number;
+	applies: {
+		[x: string]: Apply;
+	};
 }
 
 const EventFieldPage = ({
@@ -19,9 +22,8 @@ const EventFieldPage = ({
 	eventId,
 	applyId,
 	timeError,
+	applies,
 }: EventFieldPageProps) => {
-	const applies = useApplies(eventId);
-
 	const limitation = event.limitation;
 	const submitterList = Object.entries(applies ?? {})
 		.filter((apply) => !!apply[1].submitRequestedAt)
@@ -54,7 +56,7 @@ const EventFieldPage = ({
 		} catch (e) {
 			return;
 		}
-	}, [submitterList]);
+	}, [event?.openAt, submitterList]);
 
 	const submitted = myIndex !== -1;
 

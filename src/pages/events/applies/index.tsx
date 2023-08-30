@@ -82,6 +82,7 @@ const ApplyPage = () => {
 					applyId={applyId}
 					eventId={eventId}
 					timeError={timeError}
+					applies={applies}
 				/>
 			);
 	}
