@@ -67,30 +67,25 @@ const EventFieldPage = ({
 	return (
 		<div>
 			<div style={{ padding: 24 }}>
-				<Typography
-					variant="h5"
-					sx={{
-						fontWeight: 'bold',
-						mb: 2,
-					}}
-				>
+				<Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
 					응모하기
 				</Typography>
-				<Typography variant="body1" color="text.secondary" paragraph>
+				<Typography variant="body1" sx={{ fontWeight: 'bold', mb: 2 }}>
 					이벤트 시간에 맞추어 아래의 응모 버튼을 눌러주세요.
 				</Typography>
-				<Typography variant="body1" color="text.secondary" paragraph>
-					{event.openAt.toDate().toLocaleString()}
+				<Typography variant="body1" sx={{ mb: 2 }}>
+					<strong>{event.openAt.toDate().toLocaleString()}</strong> 에
+					시작됩니다.
 				</Typography>
-				<Typography variant="body1" color="text.secondary" paragraph>
+				<Typography variant="body1" sx={{ mb: 2 }}>
 					{diff}
 				</Typography>
 
-				<Typography variant="body2" sx={{ fontWeight: 'bold', mb: 2 }}>
+				<Typography variant="body1" sx={{ mb: 2 }}>
 					남은 상품 개수 : {event.limitation - appliesCount}/{event.limitation}
 				</Typography>
 
-				<Typography variant="body2" sx={{ fontWeight: 'bold', mb: 2 }}>
+				<Typography variant="body1" sx={{ mb: 2 }}>
 					현재 동시접속자 수 : {connectersCount}
 				</Typography>
 

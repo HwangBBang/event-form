@@ -43,15 +43,15 @@ const EventFieldPage = ({ event, apply, onFieldSave }: EventFieldPageProps) => {
 				})}
 			</div>
 
-			<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-				<Button
+			<div style={{ display: 'flex', justifyContent: 'right' }}>
+				{/* <Button
 					variant="contained"
 					size="medium"
 					//
 					onClick={() => navigate('../')}
 				>
 					이전
-				</Button>
+				</Button> */}
 				<Button
 					variant="contained"
 					size="medium"
