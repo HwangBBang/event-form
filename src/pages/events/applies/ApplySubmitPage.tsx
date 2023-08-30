@@ -72,7 +72,7 @@ const EventFieldPage = ({
 	return (
 		<div>
 			<div style={{ padding: 24 }}>
-				<Typography variant="h4" sx={{ fontWeight: 'bold', mb: 2 }}>
+				<Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
 					응모하기
 				</Typography>
 				<Typography variant="body1" color="text.secondary" paragraph>

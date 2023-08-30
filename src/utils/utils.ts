@@ -35,7 +35,11 @@ export function getRealTime(timeDifference: number) {
 	return currentTime;
 }
 
-export function humanFriendlyTimeDifference(from: Date, to: Date): string {
+export function humanFriendlyTimeDifference(
+	from: Date,
+	to: Date,
+	prefix: boolean = true
+): string {
 	const start = moment(from);
 	const end = moment(to);
 	const duration = moment.duration(end.diff(start));
@@ -67,6 +71,8 @@ export function humanFriendlyTimeDifference(from: Date, to: Date): string {
 	}
 
 	result = result.trim() || '동일한 시간';
+
+	if (!prefix) return result;
 
 	return isPast ? `${result} 지남` : `${result} 남음`;
 }

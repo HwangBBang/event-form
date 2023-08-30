@@ -44,24 +44,16 @@ const EventFieldPage = ({
 
 	const [diff, setDiff] = React.useState('');
 	React.useEffect(() => {
-		const interval = setInterval(() => {
-			try {
-				const lastDate =
-					submitterList[
-						submitterList.length - 1
-					][1].submitRequestedAt?.toDate();
-
-				if (!lastDate) return;
-				const now = new Date();
-				setDiff(humanFriendlyTimeDifference(lastDate, now));
-			} catch (e) {
-				return;
-			}
-		}, 30);
-
-		return () => {
-			clearInterval(interval);
-		};
+		try {
+			const lastDate =
+				submitterList[submitterList.length - 1][1].submitRequestedAt?.toDate();
+			if (!lastDate) return;
+			setDiff(
+				humanFriendlyTimeDifference(lastDate, event?.openAt?.toDate(), false)
+			);
+		} catch (e) {
+			return;
+		}
 	}, [submitterList]);
 
 	const submitted = myIndex !== -1;
@@ -108,9 +100,11 @@ const EventFieldPage = ({
 	if (myIndex === -1)
 		return (
 			<div>
-				당첨에 실패하였습니다..
-				<Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
-					행운이 찾아 온지 벌써 <br /> {diff}
+				<Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
+					이벤트가 이미 마감되었습니다...
+				</Typography>
+				<Typography variant="body1" sx={{ mb: 2 }}>
+					이 이벤트는 {diff}만에 종료되었습니다.
 				</Typography>
 			</div>
 		);
